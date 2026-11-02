@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import '../styles/public-ux.css';
+import '../styles/testimonials.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import website from '../../public/content/website.json';
@@ -57,8 +59,9 @@ const isPublicPage = !/^\/(?:admin|api)(?:\/|$)/.test(Astro.url.pathname);
     </Fragment>}
     <script is:inline src="/scripts/site-overrides.js" defer></script>
     <script>import '../lib/website/public.mjs';</script>
+    <script>import '../lib/public-programs/client.mjs';</script>
   </head>
-  <body>
+  <body class="public-site">
     <Header />
     <main>
       <slot />

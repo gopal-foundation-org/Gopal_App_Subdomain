@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import site from '../data/site.json';
+import OpenPrograms from '../components/OpenPrograms.astro';
 ---
 <BaseLayout title="Community Programs | SITA RAM Initiatives" description="Explore community programs rooted in values, service, education, family wellbeing and spiritual learning.">
   <section class="page-hero" data-program-page data-program-title="Community Programs" data-program-id="community-programs">
@@ -14,7 +15,7 @@ import site from '../data/site.json';
   <section class="section">
     <div class="container prose" data-initiative-content>
       <h2>Serving Individuals, Families and Communities</h2>
-      <p>This area is designed to grow as events, gatherings, youth programs, family programs and volunteer opportunities are confirmed.</p>
+      <p>Connect through educational gatherings, youth and family programs, and shared service. Contact our team to learn about upcoming gatherings.</p>
       <h2>Program Types</h2>
       <ul>
         <li>Educational and cultural gatherings</li>
@@ -27,16 +28,5 @@ import site from '../data/site.json';
       </div>
     </div>
   </section>
-  <section class="section section--cream">
-    <div class="container">
-      <div class="section__intro">
-        <h2>Registrations</h2>
-        <p>Current and upcoming community registration forms appear here as compact launch cards.</p>
-      </div>
-      <div data-initiative-registrations></div>
-    </div>
-  </section>
-  <section class="section section--cream" data-inline-rsvp-section hidden>
-    <div class="container" data-inline-rsvp></div>
-  </section>
+  <OpenPrograms scope="community" />
 </BaseLayout>

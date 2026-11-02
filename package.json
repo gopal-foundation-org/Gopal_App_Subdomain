@@ -7,7 +7,7 @@
     "dev": "astro dev",
     "build": "astro check && astro build && node scripts/validate-links.mjs && node scripts/build-firebase.mjs && node scripts/validate-firebase.mjs",
     "build:hosting": "npm run build",
-    "test": "node --test scripts/ram.test.mjs scripts/registration-backend.test.mjs scripts/sita.test.mjs scripts/cms.test.mjs scripts/local-admin-setup.test.mjs scripts/website.test.mjs scripts/firebase.test.mjs",
+    "test": "node --test scripts/ram.test.mjs scripts/registration-backend.test.mjs scripts/sita.test.mjs scripts/cms.test.mjs scripts/local-admin-setup.test.mjs scripts/website.test.mjs scripts/firebase.test.mjs scripts/public-ux.test.mjs",
     "test:firebase": "node --test scripts/firebase.test.mjs",
     "preview:firebase": "node scripts/firebase-preview.mjs",
     "test:ram": "node --test scripts/ram.test.mjs scripts/registration-backend.test.mjs",

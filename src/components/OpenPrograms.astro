@@ -1,0 +1,17 @@
+---
+import ram from '../../public/content/ram.json';
+import sita from '../../public/content/sita.json';
+import {programGrid,filtersMarkup} from '../lib/public-programs/cards.mjs';
+import {entries} from '../lib/public-programs/model.mjs';
+interface Props {scope?:string;limit?:number;filters?:boolean;heading?:string;intro?:string;headingPath?:string;introPath?:string;}
+const {scope='',limit=0,filters=false,heading='Programs Open Now',intro='Find a program that speaks to you. Register, join a waitlist or share your interest.',headingPath,introPath}=Astro.props;
+const contents={ram,sita};
+---
+<section class="ux-section" id="open-programs" aria-labelledby="open-programs-heading" data-public-programs data-program-scope={scope} data-program-limit={limit}>
+  <div class="container">
+    <div class="ux-section-heading"><div><h2 id="open-programs-heading" data-website-text={headingPath}>{heading}</h2><p data-website-text={introPath}>{intro}</p></div>{limit>0 && <a class="ux-section-link" href="/programs/">View all programs <span aria-hidden="true">&rarr;</span></a>}</div>
+    {filters && <div set:html={filtersMarkup()} />}
+    {filters && <p class="ux-filter-summary" data-public-program-count aria-live="polite">{entries(contents).length} programs available</p>}
+    <div class="ux-program-grid" data-public-program-grid set:html={programGrid(contents,{scope,limit})} />
+  </div>
+</section>

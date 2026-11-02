@@ -1,15 +1,12 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import '../../styles/sita.css';
-import '../../styles/testimonials.css';
+import ProgramLanding from '../../components/ProgramLanding.astro';
+import {programSeo} from '../../lib/public-programs/model.mjs';
 import content from '../../../public/content/sita.json';
-import testimonials from '../../data/testimonials.json';
-import {publicTestimonials} from '../../lib/testimonials/model.mjs';
-import {renderDetail} from '../../lib/sita/detail.mjs';
 export function getStaticPaths(){return content.programs.filter(p=>p.active).map(program=>({params:{slug:program.slug},props:{program}}));}
 const {program}=Astro.props;
+const seo=programSeo(program,'sita');
 ---
-<BaseLayout title={program.seoTitle||program.title} description={program.seoDescription||program.shortDescription} canonicalUrl={'https://programs.gloryofpeaceandlove.org/sita/'+program.slug+'/'} socialImage={program.socialImage||program.image} indexable={program.index && program.fullDescription.length>200}>
-  <div class="sita-page"><section class="sita-section"><div class="container"><article class="sita-detail" data-sita-detail data-sita-record-slug={program.slug} set:html={renderDetail(program,content,'program',publicTestimonials(testimonials,'SITA',program.id))}></article></div></section></div>
-  <script>import {initSitaDetail} from '../../lib/sita/detail.mjs';initSitaDetail();</script>
+<BaseLayout title={seo.title} description={seo.description} canonicalUrl={seo.canonical} socialImage={seo.socialImage} indexable={seo.index}>
+  <ProgramLanding program={program} content={content} scope="sita" />
 </BaseLayout>

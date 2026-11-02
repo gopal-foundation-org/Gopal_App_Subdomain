@@ -1,0 +1,859 @@
+/* Public presentation only. Load after global.css; keep administration isolated. */
+.public-site {
+  --ink: #142f49;
+  --ink-soft: #43586b;
+  --muted: #596978;
+  --cream: #f7f2e8;
+  --paper: #fffdf8;
+  --line: #dfd6c5;
+  --gold: #d3a347;
+  --deep: #112c43;
+  --ux-gold-ink: #785617;
+  --ux-control-line: #a6acac;
+  --shadow: 0 5px 18px rgb(20 47 73 / 6%);
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.65;
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+  color-scheme: light;
+}
+
+.public-site *,
+.public-site *::before,
+.public-site *::after {
+  box-sizing: border-box;
+  letter-spacing: 0;
+}
+
+.public-site :is(main, section, article, nav, form, fieldset, .container) {
+  min-width: 0;
+}
+
+.public-site .container {
+  width: min(1200px, calc(100% - 64px));
+  margin-inline: auto;
+}
+
+.public-site :is(h1, h2, h3, h4) {
+  color: var(--ink);
+  text-wrap: pretty;
+  overflow-wrap: anywhere;
+}
+
+.public-site h1 { font-size: 52px; line-height: 1.12; }
+.public-site h2 { font-size: 36px; line-height: 1.2; }
+.public-site h3 { font-size: 25px; line-height: 1.25; }
+
+.public-site :is(a, button, input, select, textarea, summary):focus-visible {
+  outline: 3px solid #91651d;
+  outline-offset: 4px;
+  scroll-margin-block: 24px;
+}
+
+.public-site :is(a, button) {
+  -webkit-tap-highlight-color: rgb(211 163 71 / 20%);
+}
+
+.public-site button {
+  min-width: 44px;
+  min-height: 44px;
+  max-width: 100%;
+  font: inherit;
+  line-height: 1.4;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+
+.public-site .button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 48px;
+  max-width: 100%;
+  padding: 12px 22px;
+  border: 1px solid var(--ink);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink);
+  font: 600 16px/1.4 var(--font-body);
+  text-align: center;
+  text-decoration: none;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+
+.public-site .button--primary {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fffdf8;
+}
+
+.public-site .button--gold {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--deep);
+}
+
+.public-site .button:not(:disabled):hover { background: #eee7d9; }
+.public-site .button--primary:not(:disabled):hover { background: #244963; }
+.public-site .button--gold:not(:disabled):hover { background: #e1b65e; }
+.public-site :is(button, input, select, textarea):disabled { opacity: 0.65; cursor: not-allowed; }
+.public-site .button[aria-disabled="true"] { opacity: 0.65; cursor: not-allowed; }
+
+.public-site :is(.actions, .ux-program-actions, .ram-actions, .sita-actions) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Natural document flow keeps expanded navigation clear of page content. */
+.public-site .topbar { background: var(--deep); }
+.public-site .topbar__inner { gap: 8px 20px; flex-wrap: wrap; }
+.public-site .topbar a { display: inline-flex; align-items: center; min-height: 44px; }
+.public-site .site-header {
+  position: relative;
+  top: auto;
+  z-index: 20;
+  border-bottom: 1px solid var(--line);
+  background: var(--paper);
+  backdrop-filter: none;
+}
+
+.public-site .site-header__inner {
+  min-height: 88px;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 12px 24px;
+  padding-block: 8px;
+}
+
+.public-site .brand { min-width: 0; flex-direction: row; align-items: center; gap: 12px; }
+.public-site .brand img { flex: 0 0 auto; width: 62px; height: 62px; object-fit: contain; }
+.public-site .brand > span:last-child { min-width: 0; }
+.public-site .brand__title { font-size: 25px; white-space: normal; }
+.public-site .brand__subtitle { font-size: 12px; }
+.public-site .brand__divider { flex: 0 0 1px; height: 42px; }
+.public-site .nav { flex-wrap: wrap; gap: 4px 18px; font-size: 15px; }
+.public-site .nav > a,
+.public-site .initiatives-toggle {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  white-space: normal;
+}
+
+.public-site .header-support { white-space: normal; padding-inline: 16px; }
+@media (min-width: 1280px) {
+  .public-site .nav > .mobile-support { display: none; }
+}
+.public-site .mega-menu { background: var(--paper); border-radius: 0 0 6px 6px; }
+.public-site .mega-heading { flex-wrap: wrap; }
+.public-site .mega-group-toggle { white-space: normal; }
+.public-site .mega-group-toggle > span { min-width: 0; }
+.public-site .mega-links a { overflow-wrap: anywhere; }
+
+/* Existing bitmap and CMS image variables remain the hero source. */
+.public-site .ux-hero,
+.public-site .ux-home .hero,
+.public-site .hero[data-home-hero] {
+  position: relative;
+  display: grid;
+  align-items: center;
+  width: 100%;
+  min-height: 436px;
+  border-bottom: 1px solid var(--line);
+  background-color: var(--cream);
+  background-image: linear-gradient(90deg, rgb(255 253 248 / 98%) 0%, rgb(255 253 248 / 96%) 38%, rgb(255 253 248 / 80%) 58%, rgb(255 253 248 / 5%) 100%), var(--hero-image, none);
+  background-size: cover;
+  background-position: center, right center;
+}
+
+.public-site :is(.ux-hero, .ux-home .hero, .hero[data-home-hero]) .hero__inner {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.public-site :is(.ux-hero, .ux-home .hero, .hero[data-home-hero]) .hero__content {
+  max-width: 640px;
+  padding-block: 48px 52px;
+}
+
+.public-site :is(.ux-hero, .ux-home .hero, .hero[data-home-hero]) h1 {
+  max-width: 620px;
+  margin: 14px 0 0;
+  font-size: 52px;
+  line-height: 1.12;
+}
+
+.public-site .eyebrow,
+.public-site .ux-initiative-label {
+  color: var(--ux-gold-ink);
+  font: 700 12px/1.5 var(--font-body);
+  text-transform: uppercase;
+}
+
+.public-site :is(.ux-hero, .ux-home .hero, .hero[data-home-hero]) .lede {
+  max-width: 52ch;
+  margin-top: 20px;
+  color: #344d60;
+  font-size: 18px;
+}
+
+.public-site :is(.ux-hero, .ux-home .hero, .hero[data-home-hero]) .actions { margin-top: 26px; }
+.public-site :is(.section, .ux-section) { padding-block: 56px; }
+.public-site .section--cream { background: var(--cream); }
+.public-site .ux-section + .ux-section { border-top: 1px solid var(--line); }
+.public-site :is(.ux-section, .ux-registration-section, #register) { scroll-margin-block-start: 24px; }
+
+.public-site .ux-section-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 10px 32px;
+  margin-bottom: 28px;
+}
+
+.public-site .ux-section-heading > :is(h2, p) { grid-column: 1; }
+.public-site .ux-section-heading p { max-width: 68ch; color: var(--ink-soft); }
+.public-site .ux-section-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--ux-gold-ink);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+
+.public-site .ux-section-heading > .ux-section-link { grid-column: 2; grid-row: 1 / span 2; }
+.public-site .ux-section-link:hover { color: var(--ink); }
+
+/* Program images, factual schedules, and registration are the card hierarchy. */
+.public-site :is(.ux-program-grid, .ux-related-grid) {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  align-items: stretch;
+}
+
+.public-site .ux-program-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fffefa;
+  box-shadow: var(--shadow);
+}
+
+.public-site .ux-card-media {
+  display: block;
+  flex: 0 0 auto;
+  overflow: hidden;
+  border-radius: 7px 7px 0 0;
+  background: var(--cream);
+}
+
+.public-site .ux-card-media:focus-visible { outline-offset: 4px; }
+.public-site .ux-card-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.public-site .ux-card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+  padding: 24px;
+}
+
+.public-site .ux-card-body h3 { margin: 0; font-size: 25px; }
+.public-site .ux-card-body h3 a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.public-site .ux-card-body p { margin: 0; color: var(--ink-soft); font-size: 16px; }
+.public-site :is(.ux-state, .ram-badge, .sita-badge) {
+  display: inline-block;
+  max-width: 100%;
+  padding: 5px 10px;
+  border-radius: 4px;
+  background: #e9eff5;
+  color: #294f70;
+  font: 600 12px/1.5 var(--font-body);
+}
+
+.public-site :is(.ux-state, .ram-badge, .sita-badge)[data-tone="green"] { background: #e8f1e8; color: #28563c; }
+.public-site :is(.ux-state, .ram-badge, .sita-badge)[data-tone="gold"] { background: #f6ebcf; color: #705018; }
+.public-site :is(.ux-state, .ram-badge, .sita-badge)[data-tone="blue"] { background: #e9eff5; color: #294f70; }
+
+.public-site .ux-card-facts,
+.public-site .ux-card-facts ul {
+  display: grid;
+  gap: 9px;
+  width: 100%;
+  margin: 4px 0 8px;
+  padding: 0;
+  list-style: none;
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.public-site .ux-card-facts li { display: flex; align-items: flex-start; gap: 10px; min-width: 0; }
+.public-site .ux-card-facts :is(svg, i) { flex: 0 0 18px; width: 18px; height: 21px; color: var(--ux-gold-ink); }
+.public-site .ux-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  width: 100%;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.public-site .ux-card-actions > .button { flex: 1 1 150px; }
+.public-site .ux-card-actions > a:not(.button) {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.public-site .ux-empty {
+  grid-column: 1 / -1;
+  padding: 32px 0;
+  border-block: 1px solid var(--line);
+  color: var(--ink-soft);
+}
+
+.public-site .ux-empty h3 { margin-bottom: 10px; }
+.public-site .ux-directory-hero { padding-block: 44px 36px; background: var(--cream); border-bottom: 1px solid var(--line); }
+.public-site .ux-directory-hero h1 { max-width: 800px; margin: 12px 0 16px; font-size: 44px; }
+.public-site .ux-directory-hero p { max-width: 66ch; color: var(--ink-soft); }
+.public-site .ux-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 20px 28px;
+  margin-block: 28px 12px;
+  padding-block: 20px;
+  border-block: 1px solid var(--line);
+}
+
+.public-site .ux-filters > :is(label, div, fieldset) { flex: 1 1 220px; min-width: 0; }
+.public-site .ux-filters fieldset { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 0; padding: 0; border: 0; }
+.public-site .ux-filters legend { margin-bottom: 8px; font-size: 14px; font-weight: 700; }
+.public-site .ux-filters label { display: grid; gap: 8px; font-size: 14px; font-weight: 600; }
+.public-site .ux-filters label:has(input:is([type="radio"], [type="checkbox"])) {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.public-site .ux-filters label:has(input:checked) { color: var(--ink); font-weight: 700; }
+.public-site .ux-filter-summary { margin-block: 12px 24px; color: var(--muted); font-size: 14px; }
+
+/* Trust comes from the official initiative identities, without extra card shells. */
+.public-site .initiative-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.public-site .initiative-card {
+  grid-template-columns: 76px minmax(0, 1fr);
+  align-items: start;
+  gap: 18px;
+  min-height: 0;
+  padding: 24px 0;
+  border: 0;
+  border-top: 2px solid var(--gold);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  transform: none;
+}
+
+.public-site .initiative-card[data-tone] { background: transparent; }
+.public-site .initiative-card:hover { box-shadow: none; transform: none; }
+.public-site .initiative-card:hover h3 { text-decoration: underline; text-underline-offset: 5px; }
+.public-site .initiative-card img { width: 76px; height: 76px; object-fit: contain; }
+.public-site .initiative-card h3 { font-size: 25px; }
+.public-site .ux-trust-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+.public-site .ux-trust-grid > * { min-width: 0; padding-top: 20px; border-top: 2px solid var(--gold); }
+.public-site .ux-trust-grid h3 { margin-bottom: 10px; font-size: 23px; }
+.public-site .ux-trust-grid p { color: var(--ink-soft); font-size: 16px; }
+.public-site .ux-trust-grid svg { width: 28px; height: 28px; margin-bottom: 12px; color: var(--ux-gold-ink); }
+.public-site .ux-resource-strip {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px 32px;
+  padding-block: 28px;
+  border-block: 1px solid var(--line);
+}
+
+.public-site .ux-resource-strip > div { flex: 1 1 280px; min-width: 0; }
+.public-site .ux-resource-strip h3 { margin-bottom: 8px; }
+.public-site .ux-resource-strip p { max-width: 65ch; color: var(--ink-soft); }
+.public-site .ux-resource-strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; }
+.public-site .ux-resource-link { min-width: 0; }
+.public-site .ux-resource-link img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 6px; }
+.public-site .ux-resource-link h3 { margin-top: 8px; font-size: 23px; }
+.public-site .ux-resource-link .ux-initiative-label { display: block; margin-top: 16px; }
+.public-site .ux-curated-links:has([data-website-featured]:empty) { display: none; }
+.public-site .ux-curated-links .content-card { border-radius: 6px; }
+.public-site .site-footer { background: var(--deep); }
+.public-site .site-footer :is(h2, h3) { color: #fffdf8; }
+.public-site .site-footer a { width: fit-content; max-width: 100%; min-height: 44px; padding-block: 8px; margin-top: 0; }
+.public-site .site-footer a:hover { color: #f0ce86; text-decoration: underline; text-underline-offset: 4px; }
+.public-site .footer-grid > * { min-width: 0; }
+
+/* Program pages keep registration close to schedule and audience information. */
+.public-site .ux-program-hero {
+  width: 100%;
+  min-height: 408px;
+  display: grid;
+  align-items: center;
+  padding-block: 40px 44px;
+  border-bottom: 1px solid var(--line);
+  background-color: var(--cream);
+  background-image: linear-gradient(90deg, rgb(255 253 248 / 99%) 0%, rgb(255 253 248 / 97%) 42%, rgb(255 253 248 / 82%) 63%, rgb(255 253 248 / 12%) 100%), var(--program-image, none);
+  background-size: cover;
+  background-position: center, right center;
+}
+
+.public-site .ux-program-heading { max-width: 740px; min-width: 0; }
+.public-site .ux-program-heading h1 { max-width: 720px; margin: 16px 0; font-size: 46px; }
+.public-site .ux-program-heading > p { max-width: 60ch; color: var(--ink-soft); font-size: 18px; }
+.public-site .ux-program-identity { display: flex; align-items: center; gap: 14px; color: var(--ux-gold-ink); font-size: 14px; font-weight: 600; }
+.public-site .ux-program-identity img { flex: 0 0 auto; width: 64px; height: 64px; object-fit: contain; }
+.public-site .ux-program-facts,
+.public-site .ux-program-facts dl {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px 24px;
+  margin: 24px 0;
+  padding-block: 18px;
+  border-block: 1px solid var(--line);
+}
+
+.public-site .ux-program-facts dl { grid-column: 1 / -1; margin: 0; padding: 0; border: 0; }
+.public-site .ux-program-facts > div { min-width: 0; }
+.public-site .ux-program-facts dt { color: var(--muted); font-size: 13px; }
+.public-site .ux-program-facts dd { margin: 4px 0 0; color: var(--ink); font-size: 15px; font-weight: 600; }
+/* Also accept a flat dl without requiring wrapper divs around each term pair. */
+.public-site :is(.ux-program-facts, .ux-program-facts dl):has(> dt) { grid-template-columns: minmax(90px, 0.35fr) minmax(0, 1fr); gap: 8px 20px; }
+.public-site :is(.ux-program-facts, .ux-program-facts dl):has(> dt) dd { margin: 0; }
+.public-site .ux-program-actions { margin-top: 24px; }
+.public-site .ux-breadcrumb { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 18px; font-size: 14px; }
+.public-site .ux-breadcrumb a { text-decoration: underline; text-underline-offset: 4px; }
+.public-site .ux-program-columns { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; margin-block: 36px; }
+.public-site .ux-program-main > .ux-program-support { padding-left: 0; border-left: 0; }
+.public-site .ux-privacy-note { margin-top: 20px; color: var(--ink-soft); font-size: 13px; }
+.public-site .ux-privacy-note a { text-decoration: underline; text-underline-offset: 3px; }
+.public-site .ux-repeat-cta { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px; padding: 28px; background: var(--deep); }
+.public-site .ux-repeat-cta h2 { color: var(--paper); margin: 0; font-size: 28px; }
+.public-site .ux-repeat-cta .button { background: var(--gold); color: var(--deep); border-color: var(--gold); }
+.public-site .ux-program-content { width: min(1200px, calc(100% - 64px)); margin-inline: auto; padding-block: 48px 56px; }
+.public-site .ux-program-content:has(> .ux-program-support) { display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, 300px); gap: 48px; align-items: start; }
+.public-site .ux-program-content > :is(.ux-related-grid, .ux-faq, .ux-section) { grid-column: 1 / -1; }
+.public-site :is(.ux-program-main, .ux-program-support) { min-width: 0; }
+.public-site .ux-program-main > section + section { margin-top: 36px; padding-top: 32px; border-top: 1px solid var(--line); }
+.public-site .ux-program-main :is(h2, h3) { margin-bottom: 16px; }
+.public-site .ux-program-main p + p { margin-top: 16px; }
+.public-site .ux-program-main :is(p, li) { color: var(--ink-soft); }
+.public-site .ux-program-main :is(ul, ol) { padding-left: 24px; }
+.public-site .ux-program-main li + li { margin-top: 8px; }
+.public-site .ux-program-main a:not(.button) { text-decoration: underline; text-underline-offset: 4px; }
+.public-site .ux-program-support { padding-left: 28px; border-left: 1px solid var(--line); }
+.public-site .ux-program-support section + section { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--line); }
+.public-site .ux-program-support h2 { font-size: 26px; margin-bottom: 12px; }
+.public-site .ux-program-support h3 { font-size: 22px; margin-bottom: 12px; }
+.public-site .ux-program-support p { color: var(--ink-soft); font-size: 15px; }
+.public-site .ux-program-support a:not(.button) { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; text-underline-offset: 4px; }
+.public-site .ux-registration-section { margin-top: 36px; padding-top: 28px; border-top: 3px solid var(--gold); }
+.public-site .ux-registration-section > :is(h2, h3) { margin-bottom: 14px; }
+.public-site .ux-registration-section > p { margin-bottom: 20px; color: var(--ink-soft); }
+.public-site [data-program-batch] { margin-block: 10px 24px; }
+.public-site .ux-inline-registration { margin-top: 24px; }
+
+/* Shared formrenderer hooks: no dependency on the initiative page stylesheets. */
+.public-site :is(.ram-registration-form, .sita-registration-form) {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 20px;
+  margin-top: 24px;
+}
+
+.public-site :is(.ram-registration-form, .sita-registration-form) > label {
+  display: block;
+  min-width: 0;
+  color: var(--ink);
+  font: 600 15px/1.5 var(--font-body);
+}
+
+.public-site :is(.ram-registration-form, .sita-registration-form) > label > small { display: block; margin-top: 6px; }
+.public-site :is(.ram-registration-form, .sita-registration-form) > label > :is(input:not([type="checkbox"]):not([type="radio"]), select, textarea) { margin-top: 8px; }
+.public-site :is(.ram-registration-form, .sita-registration-form) :is(small, p) { color: var(--ink-soft); font-size: 14px; font-weight: 400; }
+.public-site :is(.ram-registration-form, .sita-registration-form) > :is(h3, p, fieldset, .ram-checkbox, .sita-checkbox, .ram-submit-row, .sita-submit-row) { grid-column: 1 / -1; }
+.public-site :is(.ram-registration-form, .sita-registration-form) > h3 { margin: 12px 0 0; font-size: 25px; }
+.public-site :is(.ram-registration-form, .sita-registration-form) label > span[aria-hidden="true"],
+.public-site :is(.ram-question-group, .sita-question-group) legend > span[aria-hidden="true"] { color: #9c3430; }
+
+.public-site :is(.ram-registration-form, .sita-registration-form, .ux-filters, .ux-registration-section) input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="submit"]):not([type="button"]),
+.public-site :is(.ram-registration-form, .sita-registration-form, .ux-filters, .ux-registration-section) :is(select, textarea),
+.public-site select[data-program-batch] {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  padding: 11px 12px;
+  border: 1px solid var(--ux-control-line);
+  border-radius: 5px;
+  background: #fff;
+  color: var(--ink);
+  font: 16px/1.5 var(--font-body);
+}
+
+.public-site :is(.ram-registration-form, .sita-registration-form, .ux-filters) input::placeholder { color: #65717c; opacity: 1; }
+.public-site :is(.ram-registration-form, .sita-registration-form) textarea { min-height: 120px; resize: vertical; }
+.public-site :is(.ram-registration-form, .sita-registration-form) :is(input, select, textarea)[aria-invalid="true"],
+.public-site :is(.ram-registration-form, .sita-registration-form) :is(input, select, textarea):user-invalid { border-color: #a13b32; }
+.public-site :is(.ram-question-group, .sita-question-group) { min-width: 0; margin: 0; padding: 12px 0 16px; border: 0; border-bottom: 1px solid var(--line); }
+.public-site :is(.ram-question-group, .sita-question-group) legend { max-width: 100%; padding: 0; color: var(--ink); font-size: 15px; font-weight: 600; }
+.public-site :is(.ram-question-group, .sita-question-group) > small { display: block; margin-bottom: 8px; }
+.public-site :is(.ram-registration-form, .sita-registration-form) :is(.ram-checkbox, .sita-checkbox) {
+  /* Override the legacy checkbox flex rule when initiative CSS is also loaded. */
+  display: block !important;
+  min-height: 44px;
+  padding: 10px 0 10px 32px;
+  position: relative;
+  font: 400 15px/1.6 var(--font-body);
+  cursor: pointer;
+}
+
+/* Renderer emits bare text plus a required marker and help; preserve that flow. */
+.public-site :is(.ram-checkbox, .sita-checkbox) input {
+  position: absolute;
+  top: 13px;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  accent-color: var(--ink);
+}
+
+.public-site :is(.ram-checkbox, .sita-checkbox) small { display: block; margin-top: 4px; }
+.public-site .ux-filters input:is([type="radio"], [type="checkbox"]) { flex: 0 0 20px; width: 20px; height: 20px; margin: 0; accent-color: var(--ink); }
+.public-site :is(.ram-selected-top, .sita-selected-top) { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.public-site :is(.ram-selected-top, .sita-selected-top) > div { min-width: 0; }
+.public-site :is(.ram-selected-top, .sita-selected-top) h2 { margin: 12px 0; font-size: 30px; }
+.public-site :is(.ram-selected-top, .sita-selected-top) p { margin: 10px 0 0; color: var(--ink-soft); }
+.public-site :is(.ram-form-schedule, .sita-form-schedule) { color: var(--muted); font-size: 14px; }
+.public-site :is(.ram-submit-row, .sita-submit-row) { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; padding-top: 20px; border-top: 1px solid var(--line); }
+.public-site :is(.ram-submit-row, .sita-submit-row) p { flex: 1 1 200px; margin: 0; color: #843c31; font-size: 14px; }
+.public-site :is(.ram-preview-notice, .sita-preview-notice) { margin-top: 16px; padding: 12px 16px; border-left: 3px solid var(--gold); background: #f6ebcf; color: #705018; font-size: 14px; }
+.public-site :is(.ram-icon-button, .sita-icon-button, .ux-dialog-close) {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 10px;
+  border: 1px solid var(--ux-control-line);
+  border-radius: 5px;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.public-site :is(.ram-icon-button, .sita-icon-button, .ux-dialog-close):hover { background: var(--cream); }
+.public-site :is(.ram-icon-button, .sita-icon-button, .ux-dialog-close) svg { width: 22px; height: 22px; }
+.public-site :is(.ram-confirmation, .sita-confirmation) > :is(h2, h3) { margin-block: 20px 12px; }
+.public-site :is(.ram-confirmation, .sita-confirmation) p { margin-bottom: 16px; color: var(--ink-soft); white-space: pre-line; }
+.public-site :is(.ram-confirmation, .sita-confirmation) :is(.ram-actions, .sita-actions) { margin-top: 24px; }
+.public-site :is(.ram-text-link, .sita-text-link) { min-height: 44px; margin-top: 12px; padding: 8px 0; border: 0; background: transparent; color: var(--ink); font: 600 15px/1.5 var(--font-body); text-decoration: underline; text-underline-offset: 4px; }
+
+/* The native dialog stays closed until showModal()/open, with one scroll area. */
+.public-site :is(.ux-registration-dialog, .ram-success-dialog, .sita-success-dialog) {
+  width: min(760px, calc(100% - 32px));
+  max-width: 760px;
+  max-height: 90vh;
+  max-height: 90dvh;
+  margin: auto;
+  padding: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 20px 64px rgb(17 44 67 / 24%);
+}
+
+.public-site :is(.ux-registration-dialog, .ram-success-dialog, .sita-success-dialog)::backdrop { background: rgb(17 44 67 / 66%); }
+.public-site .ux-dialog-body { padding: 28px 32px 32px; }
+.public-site .ux-registration-dialog > header,
+.public-site .ux-dialog-body > header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding-bottom: 20px; border-bottom: 1px solid var(--line); margin-bottom: 24px; }
+.public-site .ux-registration-dialog > header { padding: 24px 32px; margin: 0; }
+.public-site .ux-registration-dialog header > div { min-width: 0; }
+.public-site .ux-registration-dialog header h2 { font-size: 30px; }
+.public-site .ux-registration-dialog header p { margin-top: 10px; color: var(--ink-soft); font-size: 15px; }
+.public-site :is(.ram-success-dialog, .sita-success-dialog) { padding: 28px 32px; }
+.public-site:has(.ux-registration-dialog:modal) { overflow: hidden; }
+
+/* In-flow mobile action cannot cover registration controls or the footer. */
+.public-site .ux-program-mobile-cta { display: none; }
+.public-site .ux-faq { margin-top: 36px; }
+.public-site .ux-faq > h2 { margin-bottom: 20px; }
+.public-site .ux-faq details { padding-block: 8px; border-bottom: 1px solid var(--line); }
+.public-site .ux-faq summary { min-height: 48px; padding: 12px 4px; color: var(--ink); font-size: 17px; font-weight: 600; cursor: pointer; }
+.public-site .ux-faq summary::marker { color: var(--ux-gold-ink); }
+.public-site .ux-faq details > :not(summary) { max-width: 72ch; margin-block: 4px 16px; color: var(--ink-soft); }
+
+@media (max-width: 1279px) {
+  .public-site .site-header__inner { grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto auto; gap: 0 16px; }
+  .public-site .site-header .brand { grid-column: 1; grid-row: 1; min-height: 72px; }
+  .public-site .mobile-toggle { display: grid; grid-column: 2; grid-row: 1; align-self: center; }
+  .public-site .nav,
+  .public-site .site-header .header-support { display: none; }
+  .public-site .site-header[data-open="true"] .nav { display: grid; grid-column: 1 / -1; grid-row: 2; width: 100%; max-height: 65vh; max-height: 65dvh; overflow: auto; padding: 8px 4px 16px; }
+  .public-site .nav .mobile-support { display: flex; background: #f3e6c7; }
+  .public-site .mega-menu { position: static; width: 100%; transform: none; max-height: none; box-shadow: none; }
+  .public-site .mega-group-body { padding-left: 0; }
+}
+
+@media (max-width: 980px) {
+  .public-site :is(.ux-program-grid, .ux-related-grid, .initiative-grid) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .public-site :is(.ux-hero, .ux-home .hero, .hero[data-home-hero]) { min-height: 400px; background-position: center, 65% center; }
+  .public-site :is(.ux-hero, .ux-home .hero, .hero[data-home-hero]) h1 { font-size: 44px; }
+  .public-site :is(.ux-hero, .ux-home .hero, .hero[data-home-hero]) .hero__content { max-width: 600px; padding-block: 40px; }
+  .public-site .ux-program-content:has(> .ux-program-support) { grid-template-columns: minmax(0, 1fr); gap: 36px; }
+  .public-site .ux-program-support { padding: 28px 0 0; border-left: 0; border-top: 1px solid var(--line); }
+  .public-site .ux-program-heading h1 { font-size: 40px; }
+  .public-site .ux-trust-grid { gap: 24px; }
+  .public-site .footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
+}
+
+@media (max-width: 640px) {
+  .public-site { font-size: 16px; }
+  .public-site .container,
+  .public-site .ux-program-content { width: calc(100% - 32px); }
+  .public-site h1 { font-size: 34px; }
+  .public-site h2 { font-size: 29px; }
+  .public-site h3 { font-size: 23px; }
+  .public-site .topbar__inner { flex-direction: row; align-items: center; gap: 0 12px; padding-block: 4px; font-size: 12px; }
+  .public-site .topbar__inner > span { min-width: 0; flex: 1 1 170px; }
+  .public-site .topbar a { font-size: 12px; }
+  .public-site .site-header__inner { min-height: 76px; gap: 0 10px; padding-block: 4px; }
+  .public-site .site-header .brand { min-height: 68px; gap: 8px; }
+  .public-site .brand img { width: 46px; height: 46px; }
+  .public-site .brand__divider { display: block; height: 32px; }
+  .public-site .brand__title { font-size: 20px; }
+  .public-site .brand__subtitle { margin-top: 4px; font-size: 11px; }
+  .public-site .mobile-toggle { width: 44px; height: 44px; }
+  .public-site .mega-menu { padding: 12px; }
+  .public-site .mega-group-toggle { gap: 10px; }
+  .public-site .mega-group-toggle img { width: 40px; height: 40px; }
+  .public-site .mega-group-toggle strong { font-size: 17px; }
+  .public-site .mega-group-toggle small { font-size: 14px; }
+  .public-site :is(.ux-hero, .ux-home .hero, .hero[data-home-hero]) { min-height: 0; background-image: linear-gradient(90deg, rgb(255 253 248 / 97%), rgb(255 253 248 / 88%)), var(--hero-image, none); background-position: center, 70% center; }
+  .public-site :is(.ux-hero, .ux-home .hero, .hero[data-home-hero]) .hero__content { padding-block: 32px 36px; }
+  .public-site :is(.ux-hero, .ux-home .hero, .hero[data-home-hero]) h1 { margin-top: 12px; font-size: 34px; }
+  .public-site :is(.ux-hero, .ux-home .hero, .hero[data-home-hero]) .lede { margin-top: 16px; font-size: 16px; }
+  .public-site :is(.ux-hero, .ux-home .hero, .hero[data-home-hero]) .actions { align-items: stretch; gap: 10px; margin-top: 22px; }
+  .public-site .hero .button { width: 100%; }
+  .public-site :is(.section, .ux-section) { padding-block: 36px; }
+  .public-site .ux-section-heading { grid-template-columns: minmax(0, 1fr); gap: 10px; margin-bottom: 22px; }
+  .public-site .ux-section-heading > .ux-section-link { grid-column: 1; grid-row: auto; justify-self: start; }
+  .public-site :is(.ux-program-grid, .ux-related-grid, .initiative-grid, .ux-trust-grid) { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .public-site .ux-card-body { padding: 20px; }
+  .public-site .ux-card-body h3 { font-size: 24px; }
+  .public-site .ux-card-actions { align-items: stretch; }
+  .public-site .ux-directory-hero { padding-block: 32px 28px; }
+  .public-site .ux-directory-hero h1 { font-size: 34px; }
+  .public-site .ux-filters { gap: 16px; margin-top: 20px; }
+  .public-site .ux-filters > :is(label, div, fieldset) { flex-basis: 100%; }
+  .public-site .initiative-card { grid-template-columns: 64px minmax(0, 1fr); gap: 16px; padding-block: 20px; }
+  .public-site .initiative-card img { width: 64px; height: 64px; }
+  .public-site .initiative-card h3 { font-size: 23px; }
+  .public-site .ux-resource-strip { gap: 16px; padding-block: 24px; }
+  .public-site .ux-resource-strip { grid-template-columns: minmax(0, 1fr); }
+  .public-site .ux-resource-strip > .button { width: 100%; }
+  .public-site .footer-grid { grid-template-columns: minmax(0, 1fr); }
+  .public-site .ux-program-hero { min-height: 0; padding-block: 28px 32px; background-image: linear-gradient(90deg, rgb(255 253 248 / 97%), rgb(255 253 248 / 90%)), var(--program-image, none); background-position: center, 70% center; }
+  .public-site .ux-program-heading h1 { font-size: 34px; }
+  .public-site .ux-program-heading > p { font-size: 16px; }
+  .public-site .ux-program-heading { display: flex; flex-direction: column; }
+  .public-site .ux-program-heading .ux-program-actions { order: 1; }
+  .public-site .ux-program-heading .ux-program-facts { order: 2; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .public-site .ux-program-columns { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .public-site .ux-program-identity img { width: 52px; height: 52px; }
+  .public-site .ux-program-facts,
+  .public-site .ux-program-facts dl { grid-template-columns: minmax(0, 1fr); gap: 12px; margin-block: 20px; }
+  .public-site .ux-program-facts dl { margin: 0; }
+  .public-site :is(.ux-program-facts, .ux-program-facts dl):has(> dt) { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .public-site :is(.ux-program-facts, .ux-program-facts dl):has(> dt) dd { margin-bottom: 10px; }
+  .public-site .ux-program-actions { align-items: stretch; }
+  .public-site .ux-program-actions > .button { flex: 1 1 100%; }
+  .public-site .ux-program-content { padding-block: 32px 40px; }
+  .public-site .ux-registration-section { margin-top: 28px; padding-top: 24px; }
+  .public-site :is(.ram-registration-form, .sita-registration-form) { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .public-site :is(.ram-selected-top, .sita-selected-top) h2 { font-size: 26px; }
+  .public-site :is(.ram-submit-row, .sita-submit-row) { align-items: stretch; }
+  .public-site :is(.ram-submit-row, .sita-submit-row) > .button { width: 100%; }
+  .public-site .ux-registration-dialog { width: 100%; max-width: 100%; height: 100vh; height: 100dvh; max-height: 100vh; max-height: 100dvh; margin: 0; border: 0; border-radius: 0; }
+  .public-site .ux-dialog-body { padding: 20px 16px max(24px, env(safe-area-inset-bottom)); }
+  .public-site .ux-registration-dialog > header { padding: 20px 16px; }
+  .public-site .ux-registration-dialog header h2 { font-size: 26px; }
+  .public-site :is(.ram-success-dialog, .sita-success-dialog) { padding: 24px 16px; }
+  .public-site .ux-program-mobile-cta { position: static; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 16px; padding-bottom: max(16px, env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: var(--paper); }
+  .public-site .ux-program-mobile-cta > .button { flex: 1 1 160px; }
+}
+
+@media (max-width: 360px) {
+  .public-site .brand__title { font-size: 18px; }
+  .public-site .brand__subtitle { font-size: 10px; }
+  .public-site .brand img { width: 42px; height: 42px; }
+  .public-site :is(.ux-hero, .ux-home .hero, .hero[data-home-hero]) h1,
+  .public-site .ux-program-heading h1 { font-size: 32px; }
+  .public-site .ux-card-body { padding: 18px; }
+  .public-site .ux-card-actions > .button { flex-basis: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html:has(> .public-site) { scroll-behavior: auto; }
+  .public-site,
+  .public-site *,
+  .public-site *::before,
+  .public-site *::after {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Public type and reflow refinements; system fonts avoid additional requests or swaps. */
+body.public-site {
+  --ux-type-h1: 3rem;
+  --ux-type-h2: 2rem;
+  --ux-type-h3: 1.375rem;
+  --ux-type-body: 1.0625rem;
+  --ux-type-small: 0.875rem;
+  --ux-section-space: 3rem;
+  font-family: Arial, sans-serif;
+  font-size: var(--ux-type-body);
+  line-height: 1.7;
+}
+
+body.public-site :is(h1, h2, h3, h4) { font-family: Georgia, 'Times New Roman', serif; font-weight: 400; line-height: 1.25; }
+body.public-site main :is(.ram-page, .sita-page) :is(h1, h2, h3) { font-weight: 400; line-height: 1.25; }
+body.public-site h1,
+body.public-site :is(.ux-hero, .ux-home .hero, .hero[data-home-hero], .ux-directory-hero, .ux-program-heading, .ram-hero, .sita-hero) h1 { font-size: var(--ux-type-h1); }
+body.public-site h2,
+body.public-site :is(.ram-page, .sita-page) h2 { font-size: var(--ux-type-h2); }
+body.public-site h3,
+body.public-site :is(.ux-card-body, .initiative-card, .ux-trust-grid, .ux-resource-link, .ram-card, .sita-card) h3 { font-size: var(--ux-type-h3); }
+body.public-site :is(.ux-program-support, .ux-repeat-cta) h2 { font-size: 1.625rem; }
+body.public-site :is(.ram-selected-top, .sita-selected-top) h2 { font-size: 1.75rem; }
+body.public-site :is(.ram-section, .sita-section, .section, .ux-section) { padding-block: var(--ux-section-space); }
+body.public-site :is(.ram-section-heading, .sita-section-heading, .ux-section-heading, .testimonial-section header) p { font-size: var(--ux-type-body); line-height: 1.7; max-width: 68ch; }
+body.public-site :is(.ux-program-main, .prose) > p { max-width: 72ch; }
+body.public-site :is(.button, .nav, .initiatives-toggle, .mega-links, input, select, textarea) { font-family: Arial, sans-serif; }
+body.public-site :is(.button, .ram-hero .button, .sita-hero .button) { font-size: 1rem; font-weight: 600; min-height: 48px; }
+body.public-site :is(.nav > a, .initiatives-toggle) { font-size: 0.9375rem; font-weight: 400; }
+body.public-site :is(.eyebrow, .ux-initiative-label, .ram-category, .sita-category, .ram-kicker, .sita-kicker) { font-size: 0.8125rem; font-weight: 600; text-transform: none; line-height: 1.6; }
+body.public-site :is(.ux-state, .ram-badge, .sita-badge, .ux-program-facts dt, .ux-privacy-note, .ux-filter-summary, .ram-form-schedule, .sita-form-schedule) { font-size: var(--ux-type-small); line-height: 1.6; }
+body.public-site .topbar .topbar__inner { font-size: var(--ux-type-small); }
+body.public-site .topbar .topbar__inner > a { font-size: var(--ux-type-small); flex-shrink: 1; }
+body.public-site .topbar .topbar__inner > span { max-width: none; min-width: 0; }
+body.public-site .site-header .brand__subtitle { font-size: 0.75rem; }
+body.public-site :is(.ram-video-excerpt, .sita-video-excerpt) { display: block !important; -webkit-line-clamp: unset; overflow: visible; }
+body.public-site :is(.ram-video-row, .sita-video-row) :is(strong, small) { white-space: normal; overflow-wrap: anywhere; }
+body.public-site :is(.ram-recent-videos, .sita-recent-videos) { scrollbar-gutter: stable; }
+body.public-site .ux-program-facts > div { min-width: 0; }
+body.public-site :is(.ram-question-group, .sita-question-group) { margin: 0; min-width: 0; padding: 16px; }
+body.public-site :is(.ram-question-group, .sita-question-group) legend { white-space: normal; line-height: 1.65; }
+body.public-site :is(.ram-checkbox, .sita-checkbox) { align-items: flex-start; line-height: 1.65; }
+body.public-site :is(.ram-checkbox, .sita-checkbox) input { margin-top: 3px; }
+body.public-site :is(.ram-submit-row, .sita-submit-row) [role="status"] { overflow-wrap: anywhere; }
+body.public-site .ux-program-landing .testimonial-section .container { width: 100%; }
+
+body.public-site .testimonial-section { padding-block: var(--ux-section-space); background: #f8f3e9; border-block: 1px solid var(--line); }
+body.public-site .testimonial-section header { text-align: left; margin: 0 0 28px; max-width: 720px; }
+body.public-site .testimonial-section header h2 { font-size: var(--ux-type-h2); margin: 6px 0 10px; }
+body.public-site .testimonial-eyebrow { color: var(--ux-gold-ink); font: 600 0.875rem/1.6 Arial, sans-serif; margin: 0; }
+body.public-site .testimonial-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: start; }
+body.public-site .testimonial-grid:has(> :only-child) { grid-template-columns: minmax(0, 780px); }
+body.public-site .testimonial-grid:has(> :nth-child(2):last-child) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+body.public-site .testimonial-card { height: auto; min-height: 0; padding: 26px; border: 1px solid #dfd2bb; border-radius: 6px; background: #fffdf8; box-shadow: 0 4px 14px rgb(20 47 73 / 4%); }
+body.public-site .testimonial-card blockquote { margin: 0 0 24px; font: 400 1.125rem/1.75 Georgia, 'Times New Roman', serif; }
+body.public-site .testimonial-card blockquote::before { content: '\201C'; display: block; height: 24px; color: #93691e; font: 400 2rem/1 Georgia, serif; margin-bottom: 12px; }
+body.public-site .testimonial-card blockquote p { font: inherit; margin: 0; color: var(--ink); white-space: pre-line; }
+body.public-site .testimonial-identity { display: flex; align-items: center; gap: 14px; padding-top: 18px; border-top: 1px solid var(--line); }
+body.public-site .testimonial-identity > div { min-width: 0; }
+body.public-site .testimonial-photo { flex: 0 0 56px; width: 56px; height: 56px; object-fit: cover; border-radius: 50%; margin: 0; }
+body.public-site .testimonial-name { font: 600 1rem/1.6 Arial, sans-serif; margin: 0 0 3px !important; }
+body.public-site .testimonial-context { font: 400 0.875rem/1.65 Arial, sans-serif; color: var(--ink-soft); margin: 0 !important; }
+body.public-site .testimonial-video { margin-top: 22px; border-radius: 4px; overflow: hidden; }
+body.public-site .testimonial-video span { font-size: 0.875rem; line-height: 1.6; padding: 12px; }
+body.public-site .testimonial-card iframe { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; margin-top: 18px; }
+body.public-site table { max-width: 100%; border-collapse: collapse; overflow-wrap: anywhere; }
+body.public-site :is(.prose, .ux-program-main) table { width: 100%; table-layout: fixed; }
+body.public-site :is(.prose, .ux-program-main) :is(th, td) { padding: 10px; vertical-align: top; }
+body.public-site :is(.prose, .ux-program-main) :is(pre, code) { white-space: pre-wrap; overflow-wrap: anywhere; }
+
+@media (max-width: 980px) {
+  body.public-site { --ux-type-h1: 2.625rem; --ux-type-h2: 1.875rem; --ux-section-space: 2.5rem; }
+  body.public-site .testimonial-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  body.public-site :is(.ux-trust-grid, .ux-program-columns) { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+  body.public-site .ux-program-columns > section { padding: 0; border-left: 0; }
+  body.public-site .ux-resource-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  body.public-site { --ux-type-h1: 2rem; --ux-type-h2: 1.75rem; --ux-type-h3: 1.375rem; --ux-type-body: 1rem; --ux-section-space: 2rem; }
+  body.public-site .container, body.public-site .ux-program-content { width: calc(100% - 32px); }
+  body.public-site .topbar .topbar__inner { align-items: center; gap: 6px 12px; padding-block: 8px; }
+  body.public-site .topbar .topbar__inner > span { flex: 1 1 180px; }
+  body.public-site .site-header .brand { gap: 8px; }
+  body.public-site .site-header .brand img { width: 46px; height: 46px; }
+  body.public-site .site-header .brand__title { font-size: 1.25rem; }
+  body.public-site .testimonial-grid,
+  body.public-site .testimonial-grid:has(> :nth-child(2):last-child) { grid-template-columns: minmax(0, 1fr); }
+  body.public-site .testimonial-card { padding: 22px; }
+  body.public-site .testimonial-card blockquote { font-size: 1.125rem; }
+  body.public-site .ux-resource-strip { grid-template-columns: minmax(0, 1fr); }
+  body.public-site :is(.ram-hero, .sita-hero) { min-height: 0; }
+  body.public-site :is(.ram-hero-content, .sita-hero-content) { padding-block: 28px 32px; }
+  body.public-site :is(.ram-hero-intro, .sita-hero-intro, .sita-subtitle) { font-size: 1.0625rem; }
+  body.public-site :is(.ram-section-heading, .sita-section-heading) { margin-bottom: 24px; }
+  body.public-site :is(.ram-selected-top, .sita-selected-top) h2 { font-size: 1.5rem; }
+  body.public-site :is(.ram-registration-form, .sita-registration-form) { gap: 22px; }
+  body.public-site :is(.ram-question-group, .sita-question-group) { padding: 14px 12px; }
+  body.public-site :is(.ux-registration-dialog, .ram-success-dialog, .sita-success-dialog) { scrollbar-gutter: auto; }
+  body.public-site :is(.ram-success-dialog, .sita-success-dialog) { padding: 24px 20px max(24px, env(safe-area-inset-bottom)); }
+  body.public-site .ux-repeat-cta { padding: 24px 20px; }
+}
+
+@media (max-width: 360px) {
+  body.public-site { --ux-type-h1: 1.875rem; }
+  body.public-site .site-header .brand__title { font-size: 1.125rem; }
+}

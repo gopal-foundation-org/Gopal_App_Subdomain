@@ -39,7 +39,8 @@ export function applyWebsite(c){
   const hero=document.querySelector('[data-home-hero]');if(hero&&validUrl(c.home.image))hero.style.setProperty('--hero-image',`url("${c.home.image}")`);
   const pageHero=document.querySelector('[data-initiatives-hero]');if(pageHero&&validUrl(c.initiativesPage.image))pageHero.style.backgroundImage=`linear-gradient(90deg,rgba(255,253,247,.97),rgba(255,250,240,.85)),url("${c.initiativesPage.image}")`;
   for(const key of ['primaryCta','secondaryCta']){const el=document.querySelector(`[data-website-text="home.${key}.label"]`);if(el)el.hidden=!c.home[key].enabled;}
-  c.home.sections.forEach((section,index)=>{const el=document.querySelector(`[data-home-section="${section.id}"]`);if(el){el.hidden=!section.enabled;el.style.order=String(index);}});
+  c.home.sections.forEach((section,index)=>{document.querySelectorAll(`[data-home-section="${section.id}"]`).forEach(el=>{el.hidden=!section.enabled;el.style.order=String(index);});});
+  document.querySelectorAll('[data-home-after]').forEach(el=>{el.style.order=String(c.home.sections.findIndex(section=>section.id===el.dataset.homeAfter));});
   const favicon=document.querySelector('[data-website-favicon]');if(favicon&&validUrl(c.site.favicon))favicon.href=c.site.favicon;
   const seo=pageSeo(c,location.pathname);if(seo){document.title=seo.title;document.querySelector('meta[name="description"]')?.setAttribute('content',seo.description);document.querySelector('meta[property="og:title"]')?.setAttribute('content',seo.title);document.querySelector('meta[property="og:description"]')?.setAttribute('content',seo.description);}
   const titleBase=document.querySelector('title[data-website-title]')?.dataset.websiteTitle;if(titleBase){document.title=titleBase==='default'?c.seo.defaultTitle:c.seo.titlePattern.replace('{title}',titleBase);document.querySelector('meta[property="og:title"]')?.setAttribute('content',document.title);}
