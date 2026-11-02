@@ -20,6 +20,7 @@ export async function renderWebsiteSettings(request,response,cms,Rewriter=global
       .on('[data-home-hero]',{element(el){el.setAttribute('style',`--hero-image:url("${c.home.image}")`);}})
       .on('[data-initiatives-hero]',{element(el){el.setAttribute('style',`background-image:linear-gradient(90deg,rgba(255,253,247,.97),rgba(255,250,240,.85)),url("${c.initiativesPage.image}")`);}})
       .on('[data-home-section]',{element(el){const id=el.getAttribute('data-home-section'),index=c.home.sections.findIndex(s=>s.id===id);el.setAttribute('style',`order:${index}`);if(!c.home.sections[index]?.enabled)el.setAttribute('hidden','');else el.removeAttribute('hidden');}})
+      .on('[data-home-after]',{element(el){el.setAttribute('style',`order:${c.home.sections.findIndex(section=>section.id===el.getAttribute('data-home-after'))}`);}})
       .on('[data-website-favicon]',{element(el){el.setAttribute('href',c.site.favicon);}})
       .on('[data-website-schema]',{element(el){el.setInnerContent(organizationSchema(c),{html:true});}})
       .on('title[data-website-title]',{element(el){const base=el.getAttribute('data-website-title');sharedTitle=base==='default'?c.seo.defaultTitle:c.seo.titlePattern.replace('{title}',base);el.setInnerContent(sharedTitle);}})

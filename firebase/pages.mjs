@@ -3,15 +3,18 @@ import * as ram from '../src/lib/ram/render.mjs';
 import * as sita from '../src/lib/sita/render.mjs';
 import {renderDetail as sitaDetail} from '../src/lib/sita/detail.mjs';
 import {escape as e, ordered, safeUrl} from '../src/lib/ram/model.mjs';
-import {publicTestimonials, testimonialMarkup} from '../src/lib/testimonials/model.mjs';
+import {publicTestimonials, programTestimonials, testimonialMarkup} from '../src/lib/testimonials/model.mjs';
+import {programLanding} from '../src/lib/public-programs/landing.mjs';
+import {programSeo,PUBLIC_ORIGIN} from '../src/lib/public-programs/model.mjs';
+import {renderPublicSurface} from './public-pages.mjs';
 
-export async function renderSitemap(request,response,cms) {
-  const $=load(await response.text(),{xmlMode:true}),origin=new URL(request.url).origin;
-  const urls=new Set($('loc').toArray().map(el=>$(el).text()).filter(url=>!/^\/(ram|sita)(\/|$)/.test(new URL(url).pathname)));
+export async function renderSitemap(_request,response,cms) {
+  const $=load(await response.text(),{xmlMode:true}),origin=PUBLIC_ORIGIN;
+  const urls=new Set($('loc').toArray().map(el=>$(el).text()).filter(value=>{const url=new URL(value);return !/^\/(ram|sita|admin|api)(\/|$)/.test(url.pathname) && !url.search && url.origin===origin;}));
   for(const scope of ['ram','sita']) {
     const c=await cms.published(scope);
     if(c.seo.index!==false) for(const suffix of ['', '/programs/', '/articles/'])urls.add(origin+'/'+scope+suffix);
-    for(const p of c.programs.filter(p=>p.active&&p.index!==false&&p.fullDescription?.length>200))urls.add(origin+'/'+scope+(scope==='sita'?'/':'/programs/')+p.slug+'/');
+    for(const p of c.programs.filter(p=>p.active&&programSeo(p,scope).index))urls.add(programSeo(p,scope).canonical);
     for(const a of c.articles.filter(a=>a.published&&a.body?.trim()))urls.add(origin+'/'+scope+'/articles/'+a.slug+'/');
   }
   return new Response('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+[...urls].map(url=>'<url><loc>'+e(url)+'</loc></url>').join('')+'</urlset>',{headers:{'Content-Type':'application/xml','Cache-Control':'no-store'}});
@@ -20,7 +23,8 @@ export async function renderSitemap(request,response,cms) {
 export async function renderInitiative(request, response, cms) {
   const url = new URL(request.url), path = url.pathname.replace(/\/+$/, '');
   const scope = /^\/ram(?:\/|$)/.test(path) ? 'ram' : /^\/sita(?:\/|$)/.test(path) ? 'sita' : '';
-  if (!scope || !response.headers.get('Content-Type')?.includes('text/html')) return response;
+  if (!scope) return renderPublicSurface(request,response,cms);
+  if (!response.headers.get('Content-Type')?.includes('text/html')) return response;
   const content = await cms.published(scope), feedback = await cms.published('testimonials');
   const render = scope === 'ram' ? ram : sita;
   const $ = load(await response.text());
@@ -36,16 +40,19 @@ export async function renderInitiative(request, response, cms) {
     const record = content[article?'articles':'programs'].find(r => r.slug === slug && (article?r.published:r.active));
     if (!record) return new Response('Page unavailable', {status:404, headers:{'Content-Type':'text/plain', 'Cache-Control':'no-store'}});
     const selector = '[data-'+scope+'-detail]';
-    $(selector).attr('data-'+scope+'-record-slug', record.slug).html(scope === 'sita'
-      ? sitaDetail(record, content, article?'article':'program', publicTestimonials(feedback, 'SITA', record.id))
-      : `<a class="ram-text-link" href="/ram/">Back to RAM</a><h1>${e(record.title)}</h1><img src="${e(safeUrl(record.image))}" alt="${e(record.imageAlt)}"><p>${e(record.fullDescription || record.body)}</p>${article?'':'<a class="button button--primary" href="/ram/#opportunities">Find Open Opportunities</a>'}`);
-    seo = {title:record.seoTitle || record.title, description:record.seoDescription || record.shortDescription || record.excerpt || '', canonical:url.origin+path+'/', socialImage:record.socialImage || record.image, index:article?Boolean(record.body?.trim()):Boolean(record.index && record.fullDescription?.length>200)};
+    $(selector).attr('data-'+scope+'-record-slug', record.slug).html(!article
+      ? programLanding(record,content,scope,{testimonials:programTestimonials(feedback,scope.toUpperCase(),record.id),site:(await cms.published('website')).site})
+      : scope === 'sita' ? sitaDetail(record, content, 'article', publicTestimonials(feedback, 'SITA', record.id))
+      : `<a class="ram-text-link" href="/ram/">Back to RAM</a><h1>${e(record.title)}</h1><img src="${e(safeUrl(record.image))}" alt="${e(record.imageAlt)}"><p>${e(record.body)}</p>`);
+    seo = article ? {title:record.seoTitle || record.title,description:record.seoDescription || record.excerpt || '',canonical:url.origin+'/'+scope+'/articles/'+record.slug+'/',socialImage:record.socialImage || record.image,index:Boolean(record.body?.trim())} : programSeo(record,scope);
+    if(!article)$(selector).attr('data-program-detail','');
   }
   if (scope === 'ram') $('[data-initiative-testimonials]').html(testimonialMarkup(publicTestimonials(feedback, 'RAM'), content.programs));
   $('title').text(seo.title);
   for (const [selector, value] of [['meta[name="description"]',seo.description], ['meta[property="og:title"]',seo.socialTitle || seo.title], ['meta[property="og:description"]',seo.socialDescription || seo.description], ['meta[property="og:url"]',seo.canonical]]) $(selector).attr('content',value || '');
   $('link[rel="canonical"]').attr('href',seo.canonical);
-  $('meta[name="robots"]').attr('content',seo.index?'index, follow':'noindex, nofollow');
+  const draft=url.searchParams.get('preview')==='draft' || url.searchParams.get('websitePreview')==='draft';
+  $('meta[name="robots"]').removeAttr('data-website-robots').attr('content',seo.index&&!draft?'index, follow':'noindex, nofollow');
   $('meta[property="og:image"]').remove();
   if (seo.socialImage) $('head').append($('<meta>').attr({property:'og:image', content:new URL(safeUrl(seo.socialImage),url.origin).href}));
   const headers = new Headers(response.headers); headers.delete('Content-Length'); headers.set('Cache-Control','no-store');

@@ -20,7 +20,7 @@ const {site} = website;
       </span>
     </a>
     <nav class="nav" id="primary-menu" aria-label="Primary navigation" set:html={primaryMarkup(website,Astro.url.pathname)} />
-    <a class="button button--gold header-support" href={site.donationUrl} data-website-href="site.donationUrl" data-website-text="site.supportLabel">{site.supportLabel}</a>
+    <a class="button button--gold header-support" href="/programs/"><i data-lucide="BookOpen" aria-hidden="true"></i>Join a Program</a>
     <button class="mobile-toggle" type="button" aria-label="Open menu" aria-controls="primary-menu" aria-expanded="false">
       <i data-lucide="Menu" aria-hidden="true"></i>
     </button>

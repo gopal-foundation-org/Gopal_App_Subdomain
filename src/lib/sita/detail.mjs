@@ -1,12 +1,14 @@
 import { escape as e,safeUrl,ordered,publicOpportunities,videoId } from './model.mjs';
 import { programCard,articleCard,renderVideos } from './render.mjs';
 import { testimonialMarkup } from '../testimonials/model.mjs';
+import {programLanding} from '../public-programs/landing.mjs';
 const section=(heading,html)=>html?`<section><h2>${e(heading)}</h2>${html}</section>`:'';
 const paragraphs=text=>String(text||'').split(/\n\s*\n/).filter(Boolean).map(p=>`<p>${e(p)}</p>`).join('');
 const items=text=>String(text||'').split('\n').filter(Boolean).map(t=>`<li>${e(t)}</li>`).join('');
 /** @param {any} record @param {any} content @param {string} kind @param {any} testimonials */
 export function renderDetail(record,content,kind,testimonials=null) {
   if(!record)return '<h1>Page unavailable</h1><p>This page is not currently published.</p><a href="/sita/">Return to SITA</a>';
+  if(kind==='program')return programLanding(record,content,'sita',{testimonials});
   const title=`<a class="sita-text-link" href="/sita/">Back to SITA</a><h1>${e(record.title)}</h1>${record.image?`<img src="${e(safeUrl(record.image))}" alt="${e(record.imageAlt||'')}">`:''}`;
   if(kind==='article')return title+`<p class="sita-category">${[record.author,record.category,record.publishDate].filter(Boolean).map(e).join(' · ')}</p>`+paragraphs(record.body);
   const videos={...content,videos:content.videos.filter(v=>v.programId===record.id)};
@@ -18,6 +20,7 @@ export function renderDetail(record,content,kind,testimonials=null) {
 export async function initSitaDetail(kind='program') {
   const root=document.querySelector('[data-sita-detail]');if(!root)return;
   const query=new URLSearchParams(location.search),preview=query.get('preview')==='draft';
+  if(kind==='program' && !preview && root.querySelector('[data-program-landing]'))return;
   const r=await fetch(preview?'/api/sita/content':'/content/sita.json',{cache:'no-store'});if(!r.ok)return;
   let c=await r.json();if(preview)c=c.draft||c.published;
   const record=c[kind==='program'?'programs':'articles'].find(p=>p.slug===(query.get('slug')||root.dataset.sitaRecordSlug)&&(preview||(kind==='program'?p.active:p.published))&&p.initiative==='SITA');
@@ -28,6 +31,7 @@ export async function initSitaDetail(kind='program') {
   document.querySelector('link[rel="canonical"]')?.setAttribute('href','https://programs.gloryofpeaceandlove.org/sita/'+(kind==='article'?'articles/':'')+record.slug+'/');
   const {mountPublicTestimonials}=await import('../testimonials/public.mjs');mountPublicTestimonials(root.querySelector('[data-testimonials-host]'),'SITA',c.programs,record.id);
   const {refreshIcons}=await import('./page.mjs');refreshIcons();
+  if(kind==='program'){const {refreshRegistration}=await import('../public-programs/client.mjs');await refreshRegistration();return;}
   root.addEventListener('click',event=>{
     const b=event.target.closest('[data-play-video],[data-switch-video]');if(!b)return;
     const video=b.dataset.switchVideo?c.videos.find(v=>v.id===b.dataset.switchVideo):null;

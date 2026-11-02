@@ -49,15 +49,21 @@ export function megaMarkup(c) {
 }
 export function primaryMarkup(c, currentPath = '/') {
   const normalized = value => value.split('?')[0].replace(/\/+$/,'') || '/';
-  return c.navigation.primary.filter(item=>item.enabled).map(item=>item.id==='initiatives'
+  const primary=c.navigation.primary.filter(item=>item.enabled && !['involved','contact'].includes(item.id));
+  const programLink={id:'programs',label:'Programs',href:'/programs/',enabled:true};
+  primary.sort((a,b)=>['home','initiatives','resources','about'].indexOf(a.id)-['home','initiatives','resources','about'].indexOf(b.id));
+  primary.splice(primary[0]?.id==='home'?1:0,0,programLink);
+  return primary.map(item=>item.id==='initiatives'
     ? `<div class="initiatives-nav"><button type="button" class="initiatives-toggle" aria-expanded="false" aria-controls="initiatives-mega">${e(item.label)}<span class="chevron" aria-hidden="true"></span></button><div id="initiatives-mega" class="mega-menu" hidden>${megaMarkup(c)}</div></div>`
-    : `<a href="${e(item.href)}" ${normalized(item.href)===normalized(currentPath)?'aria-current="page"':''}>${e(item.label)}</a>`).join('')+`<a class="mobile-support" href="${e(c.site.donationUrl)}">${e(c.site.supportLabel)}</a>`;
+    : `<a href="${e(item.href)}" ${normalized(item.href)===normalized(currentPath)?'aria-current="page"':''}>${e(item.label)}</a>`).join('')+'<a class="mobile-support" href="/programs/">Join a Program</a>';
 }
 export function cardsMarkup(c, homepage = false) {
   return c.initiativesPage.cards.filter(x=>x.enabled&&(!homepage||x.featured)).map(x=>`<a class="initiative-card" data-tone="${e(x.tone)}" href="${e(x.href)}"><img src="${e(x.logo)}" alt="${e(x.name)} logo" width="160" height="160" loading="lazy"><div><h3>${e(x.name)}</h3><p><strong>${e(x.subtitle)}</strong></p><p>${e(x.description)}</p></div></a>`).join('');
 }
 export function footerMarkup(c) {
-  return `<div class="container"><div class="footer-grid"><div><img class="footer-logo" src="${e(c.footer.logo)}" alt="GOPAL Foundation logo" width="150" height="150"><p>${e(c.footer.description)}</p></div><div><h2>Quick Links</h2>${c.footer.quickLinks.filter(x=>x.enabled).map(x=>link(x)).join('')}${c.footer.legalLinks.filter(x=>x.enabled).map(x=>link(x)).join('')}</div><div><h2>Initiatives</h2>${c.navigation.groups.filter(x=>x.enabled).map(x=>link({label:x.name,href:x.href})).join('')}</div><div><h2>Contact</h2><a href="mailto:${e(c.site.contactEmail)}">${e(c.site.contactEmail)}</a>${c.site.contactPhone?`<p>${e(c.site.contactPhone)}</p>`:''}<p>${e(c.site.address)}</p>${link({label:c.site.utilityLabel,href:c.site.mainWebsiteUrl})}${c.footer.socialLinks.filter(x=>x.enabled).map(x=>link(x)).join('')}</div></div><div class="footer-bottom">&copy; ${new Date().getFullYear()} ${e(c.footer.copyright)}</div></div>`;
+  const quick=[...c.footer.quickLinks.filter(x=>x.enabled)];
+  for(const item of c.navigation.primary.filter(x=>x.enabled && ['involved','contact'].includes(x.id)))if(!quick.some(link=>link.href===item.href))quick.push(item);
+  return `<div class="container"><div class="footer-grid"><div><img class="footer-logo" src="${e(c.footer.logo)}" alt="GOPAL Foundation logo" width="150" height="150"><p>${e(c.footer.description)}</p></div><div><h2>Quick Links</h2>${quick.map(x=>link(x)).join('')}${c.footer.legalLinks.filter(x=>x.enabled).map(x=>link(x)).join('')}</div><div><h2>Initiatives</h2>${c.navigation.groups.filter(x=>x.enabled).map(x=>link({label:x.name,href:x.href})).join('')}${link({label:c.site.supportLabel,href:c.site.donationUrl})}</div><div><h2>Contact</h2><a href="mailto:${e(c.site.contactEmail)}" data-website-email>${e(c.site.contactEmail)}</a>${c.site.contactPhone?`<p>${e(c.site.contactPhone)}</p>`:''}<p>${e(c.site.address)}</p>${link({label:c.site.utilityLabel,href:c.site.mainWebsiteUrl})}${c.footer.socialLinks.filter(x=>x.enabled).map(x=>link(x)).join('')}</div></div><div class="footer-bottom">&copy; ${new Date().getFullYear()} ${e(c.footer.copyright)}</div></div>`;
 }
 export function pageSeo(c,path) {
   const normalized=path.replace(/\/+$/,'')||'/';

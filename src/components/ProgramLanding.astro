@@ -1,0 +1,8 @@
+---
+import {programLanding} from '../lib/public-programs/landing.mjs';
+import {programTestimonials} from '../lib/testimonials/model.mjs';
+import feedback from '../data/testimonials.json';
+import website from '../../public/content/website.json';
+const {program,content,scope}=Astro.props;
+---
+<article data-program-detail data-ram-detail={scope==='ram' || undefined} data-sita-detail={scope==='sita' || undefined} data-ram-record-slug={scope==='ram'?program.slug:undefined} data-sita-record-slug={scope==='sita'?program.slug:undefined} set:html={programLanding(program,content,scope,{testimonials:programTestimonials(feedback,scope.toUpperCase(),program.id),site:website.site})} />
